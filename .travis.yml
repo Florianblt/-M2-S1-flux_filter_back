@@ -1,1 +1,9 @@
 language: node_js
+node_js:
+  - node
+  - 10
+install:
+  - npm install
+notifications:
+  slack:
+    secure: ei3XkR84DqhDSJkc1yobE8l/602LtsAk11pbRPhR/Z2L/vz2Ah4jDWBOJCL+/ygyXYzth/EKFhxDLrysRguCnsI99FL9/qXIrppYNHangckZ3mJabg0htXE58rfxaAEo4amsCQrEU2eAL2YZubWGSPIPc8reFIEfim8Fr1KHw/OPYp7OTGUgGvPPHSHgu/nksdq2vMpCvbgqCT7rDXJSLLdZ4mQbqe0eHPQND+Y/2F0S6GjqqYv+Hy5IIN4M1z/1bPSIWxaIf9/Ld7REcqO2nApKKMh8pTu4jDgj9jOKOshQu/ayxpYyzA1IrL0yrwLWMv94YGh/WJpMy4n7ZUyo/d/GpPFlXXOJCSk8hYxc40Oo0xVA2egzrJs2NPH2k2Y+uTauryd6K++PiGuigjT/rn6WXHdtklV7dLC1gpSSFUckdXh5UOlFb4Y+3j6gCsJw9KmOXijX1R5DIU4IItkO23VDs/3Dz6QIwZsgWwNJKlGmKTV67Xp9riy6RvDwg6ILt34GJpaoRQVDAEDA3OSqU7PRknm5t6VX6OHfLXp0fkBLNFDI1GIyJWvCJlulFyOxN0AIlKqmkKI54xda1o5NTu/AiGqE/7vdIjFPyhNf9S+BtYdd1mYf+Jbf1aIfKHu8NFn5CQffsI3IgEn9s+e0x+c+dtIXtwx5fr8XBU/0reo=
