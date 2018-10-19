@@ -1,4 +1,4 @@
-# flux-filter
+# flux-filter  [![Build Status](https://travis-ci.org/Florianblt/flux-filter-back.svg?branch=master)](https://travis-ci.org/Florianblt/flux-filter-back)
 
 ## Description
 
