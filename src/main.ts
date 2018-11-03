@@ -10,9 +10,16 @@ async function bootstrap() {
     .setDescription('Flux-filter app\'s API')
     .setBasePath('v2/api')
     .setVersion('1.0')
+    .addTag('flows')
     .build();
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('/', app, document);
+  SwaggerModule.setup('v2/api/docs', app, document);
+
+  app.use('/api/docs/swagger.json', (req, res) => {
+    res.send(document);
+  });
+
+  app.setGlobalPrefix('v2/api');
   await app.listen(3000);
 }
 bootstrap();
