@@ -16,7 +16,7 @@ export class FlowService {
         return await this.flowRepository.find();
     }
 
-    async createFlow(newFlow: NewFlow): Promise<Flow>{
+    async createFlow(newFlow: NewFlow): Promise<Flow> {
         const existingFlow = await this.flowRepository.findByName(newFlow.name);
         if (existingFlow.isPresent)
             return existingFlow.get();

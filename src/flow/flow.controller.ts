@@ -1,4 +1,5 @@
-import { Controller,
+import {
+    Controller,
     Get,
     Post,
     Body,
@@ -24,7 +25,7 @@ export class FlowController {
         type: Flow,
         isArray: true,
     })
-    findAll(): Promise<Flow []>{
+    findAll(): Promise<Flow[]> {
         return this.flowService.findAll();
     }
 
