@@ -1,8 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { FlowService } from '../flow/flow.service';
-import { AppService } from 'app.service';
 
 class MockService {
   getAll = jest.fn();
