@@ -5,6 +5,7 @@ import { SharedModule } from './shared/shared.module';
 import { FlowModule } from './flow/flow.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApplicationModule } from './app/app.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ApplicationModule } from './app/app.module';
     SharedModule,
     FlowModule,
     ApplicationModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
