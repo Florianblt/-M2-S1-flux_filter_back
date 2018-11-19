@@ -1,16 +1,18 @@
 import { NestFactory } from '@nestjs/core';
+import { config } from 'dotenv';
+config();
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('v2/api');
   const options = new DocumentBuilder()
     .setTitle('Flux-filter')
     .setDescription('Flux-filter app\'s API')
     .setBasePath('v2/api')
     .setVersion('1.0')
     .addTag('flows')
+    .addTag('apps')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('v2/api/docs', app, document);
@@ -20,6 +22,6 @@ async function bootstrap() {
   });
 
   app.setGlobalPrefix('v2/api');
-  await app.listen(3000);
+  await app.listen(parseInt(process.env.SERVER_PORT || '3000', 10));
 }
 bootstrap();

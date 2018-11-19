@@ -1,10 +1,10 @@
-import { Entity, Column, ManyToOne } from 'typeorm';
+import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { EntityModel } from '../shared/entity.model';
-import { App } from '../app/app.entity';
+import { Flow } from '../flow/flow.entity';
 
 @Entity()
-export class Flow extends EntityModel{
+export class App extends EntityModel {
     @ApiModelProperty({ required: true })
     @Column({ length: 500 })
     name: string;
@@ -20,11 +20,10 @@ export class Flow extends EntityModel{
     })
     technologies: string;
 
-    @ApiModelProperty({ required : true })
-    @ManyToOne(type => App, app => app.outcomingFlows, { onDelete: 'CASCADE' })
-    sourceApp: App;
+    @OneToMany(type => Flow, flow => flow.targetApp)
+    incomingFlows: Flow[];
 
-    @ApiModelProperty({ required : true })
-    @ManyToOne(type => App, app => app.incomingFlows, { onDelete: 'CASCADE' })
-    targetApp: App;
+    @OneToMany(type => Flow, flow => flow.sourceApp)
+    outcomingFlows: Flow[];
+
 }

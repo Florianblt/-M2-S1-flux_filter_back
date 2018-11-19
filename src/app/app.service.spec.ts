@@ -1,30 +1,30 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { FlowRepository } from './flow.repository';
+import { AppService } from './app.service';
+import { AppRepository } from './app.repository';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { FlowService } from './flow.service';
-import { AppService } from '../app/app.service';
+import { FlowService } from '../flow/flow.service';
 
 class TestingMockService { }
 
-class TestingAppService { }
+class TestingFlowService { }
 
-describe('FlowService', () => {
-  let service: FlowService;
+describe('AppService', () => {
+  let service: AppService;
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        FlowService,
+        AppService,
         {
-          provide: getRepositoryToken(FlowRepository),
+          provide: getRepositoryToken(AppRepository),
           useClass: TestingMockService,
         },
         {
-          provide: AppService,
-          useClass: TestingAppService,
+          provide: FlowService,
+          useClass: TestingFlowService,
         },
       ],
     }).compile();
-    service = module.get<FlowService>(FlowService);
+    service = module.get<AppService>(AppService);
   });
   it('should be defined', () => {
     expect(service).toBeDefined();

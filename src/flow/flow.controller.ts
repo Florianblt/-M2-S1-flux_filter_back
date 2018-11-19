@@ -3,7 +3,8 @@ import {
     Get,
     Post,
     Body,
-    Req,
+    Param,
+    Delete,
 } from '@nestjs/common';
 import {
     ApiResponse,
@@ -21,12 +22,40 @@ export class FlowController {
     @Get()
     @ApiResponse({
         status: 200,
-        description: 'The list of all the apps.',
+        description: 'Return the list of all the flows.',
         type: Flow,
         isArray: true,
     })
     findAll(): Promise<Flow[]> {
         return this.flowService.findAll();
+    }
+
+    @Get(':id')
+    @ApiResponse({
+        status: 200,
+        description: 'Return one flow',
+        type: Flow,
+        isArray: true,
+    })
+    @ApiResponse({
+        status: 404,
+        description: 'Flow not found',
+    })
+    findById(@Param('id') id: number){
+        return this.flowService.findById(id);
+    }
+
+    @Delete('id')
+    @ApiResponse({
+        status: 200,
+        description: 'Delete the flow',
+    })
+    @ApiResponse({
+        status: 404,
+        description: 'Flow not found',
+    })
+    deleteByName(@Param('id') id: number){
+        return this.flowService.deleteFlow(id);
     }
 
     @Post()
