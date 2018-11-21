@@ -90,6 +90,7 @@ export class UserService {
         const userDto = new UserDto();
         user.ifPresentOrElse(theUser => {
             theUser.role = UserRole.Admin;
+            this.userRepository.save(theUser);
             userDto.email = theUser.email;
             userDto.firstName = theUser.firstName;
             userDto.lastName = theUser.lastName;
