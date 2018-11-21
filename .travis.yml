@@ -3,6 +3,11 @@ node_js:
 - node
 install:
 - yarn install
+services:
+- postgresql: "10"
+before_script:
+- psql -c "create role typeormtest WITH PASSWORD 'password';" -U postgres
+- psql -c "create database typeormtest;" -U postgres
 notifications:
   slack:
     secure: ei3XkR84DqhDSJkc1yobE8l/602LtsAk11pbRPhR/Z2L/vz2Ah4jDWBOJCL+/ygyXYzth/EKFhxDLrysRguCnsI99FL9/qXIrppYNHangckZ3mJabg0htXE58rfxaAEo4amsCQrEU2eAL2YZubWGSPIPc8reFIEfim8Fr1KHw/OPYp7OTGUgGvPPHSHgu/nksdq2vMpCvbgqCT7rDXJSLLdZ4mQbqe0eHPQND+Y/2F0S6GjqqYv+Hy5IIN4M1z/1bPSIWxaIf9/Ld7REcqO2nApKKMh8pTu4jDgj9jOKOshQu/ayxpYyzA1IrL0yrwLWMv94YGh/WJpMy4n7ZUyo/d/GpPFlXXOJCSk8hYxc40Oo0xVA2egzrJs2NPH2k2Y+uTauryd6K++PiGuigjT/rn6WXHdtklV7dLC1gpSSFUckdXh5UOlFb4Y+3j6gCsJw9KmOXijX1R5DIU4IItkO23VDs/3Dz6QIwZsgWwNJKlGmKTV67Xp9riy6RvDwg6ILt34GJpaoRQVDAEDA3OSqU7PRknm5t6VX6OHfLXp0fkBLNFDI1GIyJWvCJlulFyOxN0AIlKqmkKI54xda1o5NTu/AiGqE/7vdIjFPyhNf9S+BtYdd1mYf+Jbf1aIfKHu8NFn5CQffsI3IgEn9s+e0x+c+dtIXtwx5fr8XBU/0reo=
@@ -11,3 +16,4 @@ deploy:
   api_key:
     secure: T1NzGL+yJG7ppwCl7Z9V1LFkEO+2nxch7N6QigiAKgywmn4xLj3PS3ltR3Rb9fhiBIMVbvRwIEotck3TV5EFG7yXzMLhpEzagnL9jBPSJYFRnWZaMnVpdQMV05m7wA2oPPtbOiekITDTOtNh43Z6/CI2SSsmGpw/edm+xLieI8xRQ8JGJ96LLuNxgAJFZhbKjH+W7exKiZZhHnhtwvikuviZs1LavVWW88l/Bxuc+l//v5D9VgNJROzr+tdr71+nmebRMBhzojcJfAOObcYXIqyEayyx574gKeX6H0s7Io+t7p8J01vGzvzHUEQlIiFPouiLd+DDGWJ6GgX2LlHqAYp6Z4DkusTHG/aKhLxuIK21v13Rkt2/1hLcxnpR1WJdiX9M4bJ9vVxGtBjC7nsF2vmWwasufeB8F+qMPPIedRHe9+VkX1wADAVwmNvLPxJOHT1Ww8mA160hyrnSWh60vctd1p/S4i5gfYZRXZhQHYK0OT5x0yrRpMsSAr0tSNMFLSqVgFULcw2DC1DQAyDYIJBYjkgPYnAoeUVnuX+ACcyY6evl/5AEOdq6N3evAeHQJEoMGZbSLUSqPLOP48PoZdhZerC6g/lopaA6PUpr32zq9N+CF43qTdfVBNibqTJQq/B4mtF10uPI4zOuADA9DouMnML8CrQ5nZs6e6acdto=
   app: flux-filter-back
+  branch: master
