@@ -11,6 +11,8 @@ class MockService {
   deleteById = jest.fn();
 }
 
+class TestUserRepository { }
+
 describe('App Controller', () => {
   let module: TestingModule;
   let appController: AppController;

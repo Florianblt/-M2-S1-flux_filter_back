@@ -7,7 +7,9 @@ import { RegisterDto } from './dto/register.dto';
 import { compare, genSalt, hash } from 'bcryptjs';
 import { LoginDto } from './dto/login.dto';
 import { JwtPayload } from 'shared/auth/interfaces/jwt-payload.interface';
-import { LoginResponseDto } from './dto/token-response.dto';
+import { LoginResponseDto } from './dto/login-response.dto';
+import { UserDto } from './dto/user.dto';
+import { UserRole } from './user-role.enum';
 
 @Injectable()
 export class UserService {
@@ -32,10 +34,18 @@ export class UserService {
         return theUser.orElseThrow(() => new NotFoundException());
     }
 
-    async register(dto: RegisterDto): Promise<User>{
+    async register(dto: RegisterDto): Promise<UserDto>{
         const isUser = await this.userRepository.findOneWithEmail(dto.email);
-        if (isUser.isPresent)
-            return isUser.get();
+        if (isUser.isPresent){
+            const userDto = new UserDto();
+            userDto.email = isUser.get().email;
+            userDto.firstName = isUser.get().firstName;
+            userDto.lastName = isUser.get().lastName;
+            userDto.id = isUser.get().id;
+            userDto.createdAt = isUser.get().creationDate;
+            userDto.updatedAt = isUser.get().updateDate;
+            return userDto;
+        }
         else {
             const newUser = new User();
             newUser.email = dto.email.toLocaleLowerCase();
@@ -61,9 +71,34 @@ export class UserService {
             password: user.password,
         };
         const responseDto: LoginResponseDto = new LoginResponseDto();
+        const userDto = new UserDto();
         responseDto.token = await this.authService.signPayload(payload);
-        responseDto.user = await this.authService.validateUser(payload);
+        const validateUser = await this.authService.validateUser(payload);
+        userDto.email = validateUser.email;
+        userDto.firstName = validateUser.firstName;
+        userDto.lastName = validateUser.lastName;
+        userDto.id = validateUser.id;
+        userDto.createdAt = validateUser.creationDate;
+        userDto.updatedAt = validateUser.updateDate;
+        responseDto.userDto = userDto;
         return responseDto;
 
+    }
+
+    async promote(id: number): Promise<UserDto>{
+        const user = await this.userRepository.findOneById(id);
+        const userDto = new UserDto();
+        user.ifPresentOrElse(theUser => {
+            theUser.role = UserRole.Admin;
+            userDto.email = theUser.email;
+            userDto.firstName = theUser.firstName;
+            userDto.lastName = theUser.lastName;
+            userDto.id = theUser.id;
+            userDto.createdAt = theUser.creationDate;
+            userDto.updatedAt = theUser.updateDate;
+        }, () => {
+            throw new HttpException('', HttpStatus.NOT_FOUND);
+        });
+        return userDto;
     }
 }

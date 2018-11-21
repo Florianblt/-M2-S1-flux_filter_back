@@ -1,9 +1,9 @@
 import { ApiModelProperty } from '@nestjs/swagger';
-import { User } from 'user/user.entity';
+import { UserDto } from './user.dto';
 
 export class LoginResponseDto {
     @ApiModelProperty() token: string;
 
-    @ApiModelProperty({ type: User })
-    user: User;
+    @ApiModelProperty()
+    userDto: UserDto;
 }
