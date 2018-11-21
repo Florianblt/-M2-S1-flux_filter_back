@@ -5,21 +5,31 @@ import {
     Body,
     Param,
     Delete,
+    UseGuards,
 } from '@nestjs/common';
 import {
     ApiResponse,
     ApiUseTags,
+    ApiBearerAuth,
 } from '@nestjs/swagger';
 import { Flow } from './flow.entity';
 import { FlowService } from './flow.service';
 import { NewFlow } from './newFlow.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from '../shared/guards/roles.guard';
+import { UserRole } from '../user/user-role.enum';
+import { Roles } from '../decorators/roles.decorator';
 
 @ApiUseTags('flows')
 @Controller('flows')
+@ApiBearerAuth()
 export class FlowController {
     constructor(private readonly flowService: FlowService) { }
 
     @Get()
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles(UserRole.User)
+    @Roles(UserRole.Admin)
     @ApiResponse({
         status: 200,
         description: 'Return the list of all the flows.',
@@ -31,6 +41,9 @@ export class FlowController {
     }
 
     @Get(':id')
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles(UserRole.User)
+    @Roles(UserRole.Admin)
     @ApiResponse({
         status: 200,
         description: 'Return one flow',
@@ -46,6 +59,8 @@ export class FlowController {
     }
 
     @Delete('id')
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles(UserRole.Admin)
     @ApiResponse({
         status: 200,
         description: 'Delete the flow',
@@ -59,6 +74,8 @@ export class FlowController {
     }
 
     @Post()
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles(UserRole.Admin)
     @ApiResponse({
         status: 201,
         description: 'The flow technology has been created.',

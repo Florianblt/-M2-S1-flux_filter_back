@@ -14,6 +14,7 @@ async function bootstrap() {
     .addTag('flows')
     .addTag('apps')
     .addTag('users')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('v2/api/docs', app, document);

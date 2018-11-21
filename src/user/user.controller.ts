@@ -1,14 +1,18 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Param, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { ApiResponse, ApiUseTags } from '@nestjs/swagger';
-import { User } from './user.entity';
+import { ApiResponse, ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
 import { RegisterDto } from './dto/register.dto';
-import { App } from 'app/app.entity';
 import { LoginDto } from './dto/login.dto';
-import { LoginResponseDto } from './dto/token-response.dto';
+import { LoginResponseDto } from './dto/login-response.dto';
+import { UserDto } from './dto/user.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from '../shared/guards/roles.guard';
+import { Roles } from '../decorators/roles.decorator';
+import { UserRole } from './user-role.enum';
 
 @ApiUseTags('users')
 @Controller('users')
+@ApiBearerAuth()
 export class UserController {
     constructor(private readonly userService: UserService) { }
 
@@ -16,14 +20,14 @@ export class UserController {
     @ApiResponse({
         status: 200,
         description: 'Register one user',
-        type: App,
+        type: UserDto,
         isArray: true,
     })
     @ApiResponse({
         status: 400,
         description: 'Bad request.',
     })
-    async register(@Body() dto: RegisterDto): Promise<User> {
+    async register(@Body() dto: RegisterDto): Promise<UserDto> {
         return this.userService.register(dto);
     }
 
@@ -31,7 +35,7 @@ export class UserController {
     @ApiResponse({
         status: 200,
         description: 'Log an user',
-        type: App,
+        type: UserDto,
         isArray: true,
     })
     @ApiResponse({
@@ -40,5 +44,22 @@ export class UserController {
     })
     async login(@Body() dto: LoginDto): Promise<LoginResponseDto> {
         return this.userService.login(dto);
+    }
+
+    @Post(':id/promote')
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles(UserRole.Admin)
+    @ApiResponse({
+        status: 200,
+        description: 'promote an user as admin',
+        type: UserDto,
+        isArray: true,
+    })
+    @ApiResponse({
+        status: 404,
+        description: 'Bad request.',
+    })
+    async promote(@Param('id') id: number): Promise<UserDto> {
+        return this.userService.promote(id);
     }
 }
