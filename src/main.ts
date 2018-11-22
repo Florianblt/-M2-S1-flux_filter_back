@@ -24,6 +24,7 @@ async function bootstrap() {
   });
 
   app.setGlobalPrefix('v2/api');
+  app.enableCors();
   await app.listen(parseInt(process.env.SERVER_PORT || '3000', 10));
 }
 bootstrap();
