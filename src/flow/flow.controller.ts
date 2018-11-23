@@ -28,8 +28,7 @@ export class FlowController {
 
     @Get()
     @UseGuards(AuthGuard('jwt'), RolesGuard)
-    @Roles(UserRole.User)
-    @Roles(UserRole.Admin)
+    @Roles(UserRole.User, UserRole.Admin)
     @ApiResponse({
         status: 200,
         description: 'Return the list of all the flows.',

@@ -16,8 +16,7 @@ export class AppController {
 
     @Get()
     @UseGuards(AuthGuard('jwt'), RolesGuard)
-    @Roles(UserRole.User)
-    @Roles(UserRole.Admin)
+    @Roles(UserRole.User, UserRole.Admin)
     @ApiResponse({
         status: 200,
         description: 'The list of all the apps.',
@@ -30,8 +29,7 @@ export class AppController {
 
     @Get(':id')
     @UseGuards(AuthGuard('jwt'), RolesGuard)
-    @Roles(UserRole.User)
-    @Roles(UserRole.Admin)
+    @Roles(UserRole.User, UserRole.Admin)
     @ApiResponse({
         status: 200,
         description: 'Return one app',
