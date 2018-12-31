@@ -13,7 +13,7 @@ import { ApplicationModule } from '../app/app.module';
     SharedModule,
     forwardRef(() => ApplicationModule),
   ],
-  exports: [ FlowService ],
+  exports: [FlowService],
   providers: [FlowService],
   controllers: [FlowController],
 })

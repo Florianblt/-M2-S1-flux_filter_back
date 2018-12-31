@@ -12,7 +12,7 @@ class MockService {
   deleteById = jest.fn();
 }
 
-class TestingAuthService { }
+class TestingAuthService {}
 
 describe('User Controller', () => {
   let module: TestingModule;
@@ -36,7 +36,9 @@ describe('User Controller', () => {
     userService = module.get(UserService) as MockService;
   });
   it('should be defined', () => {
-    const controller: UserController = module.get<UserController>(UserController);
+    const controller: UserController = module.get<UserController>(
+      UserController,
+    );
     expect(controller).toBeDefined();
   });
 });

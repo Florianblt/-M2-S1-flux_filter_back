@@ -5,15 +5,11 @@ import Optional from 'typescript-optional';
 
 @EntityRepository(Flow)
 export class FlowRepository extends Repository<Flow> {
-    async findByName(name: string): Promise<Optional<Flow[]>>{
-        return Optional.ofNullable(
-            await this.find({name}),
-        );
-    }
+  async findByName(name: string): Promise<Optional<Flow[]>> {
+    return Optional.ofNullable(await this.find({ name }));
+  }
 
-    async findOneById(id: number): Promise<Optional<Flow>>{
-        return Optional.ofNullable(
-            await this.findOne(id),
-        );
-    }
+  async findOneById(id: number): Promise<Optional<Flow>> {
+    return Optional.ofNullable(await this.findOne(id));
+  }
 }

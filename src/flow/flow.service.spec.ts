@@ -3,10 +3,13 @@ import { FlowRepository } from './flow.repository';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { FlowService } from './flow.service';
 import { AppService } from '../app/app.service';
+import { Pagination } from './../pagination';
 
-class TestingMockService { }
+class TestingMockService {}
 
-class TestingAppService { }
+class TestingAppService {}
+
+class TestingPagination {}
 
 describe('FlowService', () => {
   let service: FlowService;

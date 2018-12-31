@@ -14,52 +14,52 @@ import { UserRole } from './user-role.enum';
 @Controller('users')
 @ApiBearerAuth()
 export class UserController {
-    constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
-    @Post('register')
-    @ApiResponse({
-        status: 200,
-        description: 'Register one user',
-        type: UserDto,
-        isArray: true,
-    })
-    @ApiResponse({
-        status: 400,
-        description: 'Bad request.',
-    })
-    async register(@Body() dto: RegisterDto): Promise<UserDto> {
-        return this.userService.register(dto);
-    }
+  @Post('register')
+  @ApiResponse({
+    status: 200,
+    description: 'Register one user',
+    type: UserDto,
+    isArray: true,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request.',
+  })
+  async register(@Body() dto: RegisterDto): Promise<UserDto> {
+    return this.userService.register(dto);
+  }
 
-    @Post('login')
-    @ApiResponse({
-        status: 200,
-        description: 'Log an user',
-        type: UserDto,
-        isArray: true,
-    })
-    @ApiResponse({
-        status: 404,
-        description: 'Bad request.',
-    })
-    async login(@Body() dto: LoginDto): Promise<LoginResponseDto> {
-        return this.userService.login(dto);
-    }
+  @Post('login')
+  @ApiResponse({
+    status: 200,
+    description: 'Log an user',
+    type: UserDto,
+    isArray: true,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Bad request.',
+  })
+  async login(@Body() dto: LoginDto): Promise<LoginResponseDto> {
+    return this.userService.login(dto);
+  }
 
-    @Post(':id/promote')
-    @UseGuards(AuthGuard('jwt'), RolesGuard)
-    @Roles(UserRole.Admin)
-    @ApiResponse({
-        status: 200,
-        description: 'promote an user as admin',
-        type: UserDto,
-        isArray: true,
-    })
-    @ApiResponse({
-        status: 404,
-        description: 'Bad request.',
-    })
-    async promote(@Param('id') id: number): Promise<UserDto> {
-        return this.userService.promote(id);
-    }
+  @Post(':id/promote')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.Admin)
+  @ApiResponse({
+    status: 200,
+    description: 'promote an user as admin',
+    type: UserDto,
+    isArray: true,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Bad request.',
+  })
+  async promote(@Param('id') id: number): Promise<UserDto> {
+    return this.userService.promote(id);
+  }
 }

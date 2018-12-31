@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { FlowService } from './flow.service';
 import { FlowController } from './flow.controller';
+import { Pagination } from './../pagination';
 
 class MockService {
   getAll = jest.fn();
@@ -29,7 +30,9 @@ describe('Flow Controller', () => {
     flowService = module.get(FlowService) as MockService;
   });
   it('should be defined', () => {
-    const controller: FlowController = module.get<FlowController>(FlowController);
+    const controller: FlowController = module.get<FlowController>(
+      FlowController,
+    );
     expect(controller).toBeDefined();
   });
 });

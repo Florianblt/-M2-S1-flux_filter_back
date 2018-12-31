@@ -1,4 +1,7 @@
-# flux-filter  [![Build Status](https://travis-ci.org/Florianblt/flux-filter-back.svg?branch=master)](https://travis-ci.org/Florianblt/flux-filter-back)
+# flux-filter
+
+[![Build Status](https://travis-ci.org/Florianblt/flux-filter-back.svg?branch=master)](https://travis-ci.org/Florianblt/flux-filter-back)
+[![Coverage Status](https://coveralls.io/repos/github/Florianblt/flux-filter-back/badge.svg?branch=master)](https://coveralls.io/github/Florianblt/flux-filter-back?branch=master)
 
 ## Description
 
@@ -35,4 +38,3 @@ $ yarn run test:e2e
 # test coverage
 $ yarn run test:cov
 ```
-

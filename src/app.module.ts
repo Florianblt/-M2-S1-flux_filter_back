@@ -17,9 +17,7 @@ import { UserModule } from './user/user.module';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE,
-      entities: [
-        'src/**/**.entity{.ts,.js}',
-      ],
+      entities: ['src/**/**.entity{.ts,.js}'],
       synchronize: true,
     }),
     SharedModule,
@@ -30,5 +28,4 @@ import { UserModule } from './user/user.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-}
+export class AppModule {}

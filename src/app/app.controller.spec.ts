@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { Pagination } from './../pagination';
 
 class MockService {
   getAll = jest.fn();
@@ -11,7 +12,7 @@ class MockService {
   deleteById = jest.fn();
 }
 
-class TestUserRepository { }
+class TestUserRepository {}
 
 describe('App Controller', () => {
   let module: TestingModule;
