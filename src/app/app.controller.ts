@@ -58,8 +58,12 @@ export class AppController {
   })
   async findAll(@Request() request): Promise<Pagination<App>> {
     return this.appService.paginate({
-      limit: request.query.hasOwnProperty('limit') ? request.query.limit : 10,
-      page: request.query.hasOwnProperty('page') ? request.query.page : 0,
+      limit: request.query.hasOwnProperty('limit')
+        ? request.query.limit
+        : process.env.LIMIT,
+      page: request.query.hasOwnProperty('page')
+        ? request.query.page
+        : process.env.PAGE,
       name: request.query.hasOwnProperty('name') ? request.query.name : '',
       description: request.query.hasOwnProperty('description')
         ? request.query.description

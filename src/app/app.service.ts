@@ -32,6 +32,7 @@ export class AppService {
       where: {
         name: Like('%' + options.name + '%'),
         description: Like('%' + options.description + '%'),
+        technologies: Like('%' + options.technologies + '%'),
       },
     });
     return new Pagination<App>({ results, total });

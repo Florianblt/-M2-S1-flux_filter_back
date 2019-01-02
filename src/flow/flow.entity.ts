@@ -9,11 +9,11 @@ export class Flow extends EntityModel {
   @Column({ length: 500 })
   name: string;
 
-  @ApiModelProperty({ required: false })
+  @ApiModelProperty({ required: true })
   @Column({ length: 1000 })
   description: string;
 
-  @ApiModelProperty({ required: false })
+  @ApiModelProperty({ required: true })
   @Column({
     length: 1000,
     nullable: true,

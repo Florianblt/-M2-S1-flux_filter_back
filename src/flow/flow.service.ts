@@ -33,6 +33,7 @@ export class FlowService {
       where: {
         name: Like('%' + options.name + '%'),
         description: Like('%' + options.description + '%'),
+        technologies: Like('%' + options.technologies + '%'),
       },
     });
     return new Pagination<Flow>({ results, total });
