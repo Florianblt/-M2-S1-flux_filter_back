@@ -7,6 +7,6 @@ export class AppController {
 
   @Get('hello')
   root() {
-    return 'Hello nestJS !';
+    return 'Hello world !';
   }
 }
