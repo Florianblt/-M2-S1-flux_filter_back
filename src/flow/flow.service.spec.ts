@@ -4,32 +4,23 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { FlowService } from './flow.service';
 import { AppService } from '../app/app.service';
 import { Pagination } from './../pagination';
-
-class TestingMockService {}
-
-class TestingAppService {}
-
-class TestingPagination {}
+import { FlowController } from './flow.controller';
+import { AppRepository } from '../app/app.repository';
 
 describe('FlowService', () => {
-  let service: FlowService;
-  beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        FlowService,
-        {
-          provide: getRepositoryToken(FlowRepository),
-          useClass: TestingMockService,
-        },
-        {
-          provide: AppService,
-          useClass: TestingAppService,
-        },
-      ],
-    }).compile();
-    service = module.get<FlowService>(FlowService);
+  let appService: AppService;
+  let appRepository: AppRepository;
+  let flowRepository: FlowRepository;
+  let flowService: FlowService;
+
+  beforeEach(() => {
+    appRepository = new AppRepository();
+    flowRepository = new FlowRepository();
+    appService = new AppService(appRepository);
+    flowService = new FlowService(flowRepository, appService);
   });
+
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(flowService).toBeDefined();
   });
 });

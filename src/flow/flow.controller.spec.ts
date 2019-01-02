@@ -1,38 +1,26 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { FlowService } from './flow.service';
 import { FlowController } from './flow.controller';
-import { Pagination } from './../pagination';
-
-class MockService {
-  getAll = jest.fn();
-  saveNewTechno = jest.fn();
-  find = jest.fn();
-  getOneById = jest.fn();
-  updateName = jest.fn();
-  deleteById = jest.fn();
-}
+import { AppController } from '../app/app.controller';
+import { AppService } from '../app/app.service';
+import { AppRepository } from '../app/app.repository';
+import { FlowRepository } from './flow.repository';
 
 describe('Flow Controller', () => {
-  let module: TestingModule;
   let flowController: FlowController;
-  let flowService: MockService;
-  beforeAll(async () => {
-    module = await Test.createTestingModule({
-      controllers: [FlowController],
-      providers: [
-        {
-          provide: FlowService,
-          useClass: MockService,
-        },
-      ],
-    }).compile();
-    flowController = module.get(FlowController);
-    flowService = module.get(FlowService) as MockService;
+  let appService: AppService;
+  let appRepository: AppRepository;
+  let flowRepository: FlowRepository;
+  let flowService: FlowService;
+
+  beforeEach(() => {
+    appRepository = new AppRepository();
+    flowRepository = new FlowRepository();
+    appService = new AppService(appRepository);
+    flowService = new FlowService(flowRepository, appService);
+    flowController = new FlowController(flowService);
   });
+
   it('should be defined', () => {
-    const controller: FlowController = module.get<FlowController>(
-      FlowController,
-    );
-    expect(controller).toBeDefined();
+    expect(flowController).toBeDefined();
   });
 });

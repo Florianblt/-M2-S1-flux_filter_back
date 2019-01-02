@@ -9,7 +9,13 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiUseTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiUseTags,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiImplicitQuery,
+  ApiImplicitParam,
+} from '@nestjs/swagger';
 import { AppService } from './app.service';
 import { App } from './app.entity';
 import { NewApp } from './newApp.dto';
@@ -28,6 +34,22 @@ export class AppController {
   @Get()
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles(UserRole.User, UserRole.Admin)
+  @ApiImplicitQuery({
+    name: 'limit',
+    required: false,
+  })
+  @ApiImplicitQuery({
+    name: 'page',
+    required: false,
+  })
+  @ApiImplicitQuery({
+    name: 'name',
+    required: false,
+  })
+  @ApiImplicitQuery({
+    name: 'description',
+    required: false,
+  })
   @ApiResponse({
     status: 200,
     description: 'The list of all the apps.',
@@ -38,6 +60,13 @@ export class AppController {
     return this.appService.paginate({
       limit: request.query.hasOwnProperty('limit') ? request.query.limit : 10,
       page: request.query.hasOwnProperty('page') ? request.query.page : 0,
+      name: request.query.hasOwnProperty('name') ? request.query.name : '',
+      description: request.query.hasOwnProperty('description')
+        ? request.query.description
+        : '',
+      technologies: request.query.hasOwnProperty('technologies')
+        ? request.query.technologies
+        : '',
     });
   }
 

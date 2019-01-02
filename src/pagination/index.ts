@@ -1,3 +1,3 @@
-export * from './pagination.options.interface';
-export * from './pagination.results.interface';
+export * from './pagination.options';
+export * from './pagination.results';
 export * from './pagination';

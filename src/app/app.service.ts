@@ -9,28 +9,30 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { App } from './app.entity';
 import { NewApp } from './newApp.dto';
 import { FlowService } from '../flow/flow.service';
-import { PaginationOptionsInterface } from 'pagination/pagination.options.interface';
+import { PaginationOptions } from 'pagination/pagination.options';
 import { Pagination } from './../pagination';
+import { AppPagination } from './app.pagination';
+import { Like } from 'typeorm';
 
 @Injectable()
 export class AppService {
   constructor(
     @InjectRepository(AppRepository)
     private readonly appRepository: AppRepository,
-    @Inject(forwardRef(() => FlowService))
-    private readonly flowService: FlowService,
   ) {}
 
   async findAll(): Promise<App[]> {
     return await this.appRepository.find();
   }
 
-  async paginate(
-    options: PaginationOptionsInterface,
-  ): Promise<Pagination<App>> {
+  async paginate(options: AppPagination): Promise<Pagination<App>> {
     const [results, total] = await this.appRepository.findAndCount({
       take: options.limit,
       skip: options.page,
+      where: {
+        name: Like('%' + options.name + '%'),
+        description: Like('%' + options.description + '%'),
+      },
     });
     return new Pagination<App>({ results, total });
   }

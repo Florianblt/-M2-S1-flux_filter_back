@@ -9,7 +9,9 @@ import { Flow } from './flow.entity';
 import { NewFlow } from './newFlow.dto';
 import { AppService } from '../app/app.service';
 import { FlowRepository } from './flow.repository';
-import { Pagination, PaginationOptionsInterface } from './../pagination';
+import { Pagination } from './../pagination';
+import { FlowPagination } from './flow.pagination';
+import { Like } from 'typeorm';
 
 @Injectable()
 export class FlowService {
@@ -24,12 +26,14 @@ export class FlowService {
     return await this.flowRepository.find();
   }
 
-  async paginate(
-    options: PaginationOptionsInterface,
-  ): Promise<Pagination<Flow>> {
+  async paginate(options: FlowPagination): Promise<Pagination<Flow>> {
     const [results, total] = await this.flowRepository.findAndCount({
       take: options.limit,
       skip: options.page,
+      where: {
+        name: Like('%' + options.name + '%'),
+        description: Like('%' + options.description + '%'),
+      },
     });
     return new Pagination<Flow>({ results, total });
   }

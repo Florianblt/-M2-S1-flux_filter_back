@@ -8,7 +8,12 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { ApiResponse, ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiResponse,
+  ApiUseTags,
+  ApiBearerAuth,
+  ApiImplicitQuery,
+} from '@nestjs/swagger';
 import { Flow } from './flow.entity';
 import { FlowService } from './flow.service';
 import { NewFlow } from './newFlow.dto';
@@ -27,6 +32,22 @@ export class FlowController {
   @Get()
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles(UserRole.User, UserRole.Admin)
+  @ApiImplicitQuery({
+    name: 'limit',
+    required: false,
+  })
+  @ApiImplicitQuery({
+    name: 'page',
+    required: false,
+  })
+  @ApiImplicitQuery({
+    name: 'name',
+    required: false,
+  })
+  @ApiImplicitQuery({
+    name: 'description',
+    required: false,
+  })
   @ApiResponse({
     status: 200,
     description: 'Return the list of all the flows.',
@@ -37,6 +58,13 @@ export class FlowController {
     return this.flowService.paginate({
       limit: request.query.hasOwnProperty('limit') ? request.query.limit : 10,
       page: request.query.hasOwnProperty('page') ? request.query.page : 0,
+      name: request.query.hasOwnProperty('name') ? request.query.name : '',
+      description: request.query.hasOwnProperty('description')
+        ? request.query.description
+        : null,
+      technologies: request.query.hasOwnProperty('technologies')
+        ? request.query.technologies
+        : null,
     });
   }
 

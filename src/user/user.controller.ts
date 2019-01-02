@@ -33,7 +33,7 @@ export class UserController {
 
   @Post('login')
   @ApiResponse({
-    status: 200,
+    status: 201,
     description: 'Log an user',
     type: UserDto,
     isArray: true,
