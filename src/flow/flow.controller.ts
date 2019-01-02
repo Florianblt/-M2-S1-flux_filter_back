@@ -48,6 +48,10 @@ export class FlowController {
     name: 'description',
     required: false,
   })
+  @ApiImplicitQuery({
+    name: 'technologies',
+    required: false,
+  })
   @ApiResponse({
     status: 200,
     description: 'Return the list of all the flows.',

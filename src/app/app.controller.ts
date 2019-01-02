@@ -50,6 +50,14 @@ export class AppController {
     name: 'description',
     required: false,
   })
+  @ApiImplicitQuery({
+    name: 'team',
+    required: false,
+  })
+  @ApiImplicitQuery({
+    name: 'technologies',
+    required: false,
+  })
   @ApiResponse({
     status: 200,
     description: 'The list of all the apps.',
@@ -68,6 +76,7 @@ export class AppController {
       description: request.query.hasOwnProperty('description')
         ? request.query.description
         : '',
+      team: request.query.hasOwnProperty('team') ? request.query.team : '',
       technologies: request.query.hasOwnProperty('technologies')
         ? request.query.technologies
         : '',

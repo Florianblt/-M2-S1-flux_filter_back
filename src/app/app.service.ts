@@ -32,6 +32,7 @@ export class AppService {
       where: {
         name: Like('%' + options.name + '%'),
         description: Like('%' + options.description + '%'),
+        team: Like('%' + options.team + '%'),
         technologies: Like('%' + options.technologies + '%'),
       },
     });

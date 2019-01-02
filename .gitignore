@@ -16,3 +16,5 @@ coverage/
 
 dist
 dev\.env
+
+prod\.env

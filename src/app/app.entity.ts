@@ -20,6 +20,13 @@ export class App extends EntityModel {
   })
   technologies: string;
 
+  @ApiModelProperty({ required: true })
+  @Column({
+    length: 1000,
+    nullable: true,
+  })
+  team: string;
+
   @OneToMany(type => Flow, flow => flow.targetApp)
   incomingFlows: Flow[];
 
