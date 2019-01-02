@@ -59,6 +59,7 @@ export class FlowService {
     let flow = new Flow();
     flow.name = newFlow.name;
     flow.description = newFlow.description;
+    flow.technologies = newFlow.technologies;
     flow.sourceApp = existingSourceApp;
     flow.targetApp = existingTargetApp;
     flow = await this.flowRepository.save(flow);

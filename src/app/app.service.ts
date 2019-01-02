@@ -53,6 +53,8 @@ export class AppService {
     let app = new App();
     app.name = newApp.name;
     app.description = newApp.description;
+    app.technologies = newApp.technologies;
+    app.team = newApp.team;
     app = await this.appRepository.save(app);
     return app;
   }

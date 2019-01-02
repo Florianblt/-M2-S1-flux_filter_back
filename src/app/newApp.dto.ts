@@ -14,4 +14,16 @@ export class NewApp {
   @MinLength(1)
   @Type(() => String)
   description: string;
+
+  @ApiModelProperty({ required: true })
+  @IsString()
+  @MinLength(1)
+  @Type(() => String)
+  technologies: string;
+
+  @ApiModelProperty({ required: true })
+  @IsString()
+  @MinLength(1)
+  @Type(() => String)
+  team: string;
 }

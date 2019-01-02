@@ -16,6 +16,11 @@ export class NewFlow {
   description: string;
 
   @ApiModelProperty({ required: true })
+  @IsString()
+  @Type(() => String)
+  technologies: string;
+
+  @ApiModelProperty({ required: true })
   @IsNumber()
   @MinLength(1)
   @Type(() => Number)
