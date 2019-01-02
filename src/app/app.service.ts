@@ -3,16 +3,16 @@ import {
   NotFoundException,
   Inject,
   forwardRef,
+  BadRequestException,
 } from '@nestjs/common';
 import { AppRepository } from './app.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { App } from './app.entity';
 import { NewApp } from './newApp.dto';
-import { FlowService } from '../flow/flow.service';
-import { PaginationOptions } from 'pagination/pagination.options';
 import { Pagination } from './../pagination';
 import { AppPagination } from './app.pagination';
 import { Like } from 'typeorm';
+import { HttpException } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
@@ -35,7 +35,11 @@ export class AppService {
         team: Like('%' + options.team + '%'),
         technologies: Like('%' + options.technologies + '%'),
       },
+      order: {
+        updateDate: 'DESC',
+      },
     });
+    if (options.page > total) throw new BadRequestException();
     return new Pagination<App>({ results, total });
   }
 

@@ -3,6 +3,7 @@ import {
   NotFoundException,
   Inject,
   forwardRef,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Flow } from './flow.entity';
@@ -35,7 +36,11 @@ export class FlowService {
         description: Like('%' + options.description + '%'),
         technologies: Like('%' + options.technologies + '%'),
       },
+      order: {
+        updateDate: 'DESC',
+      },
     });
+    if (options.page >= total) throw new BadRequestException();
     return new Pagination<Flow>({ results, total });
   }
 
