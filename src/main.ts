@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const options = new DocumentBuilder()
     .setTitle('Flux-filter')
-    .setDescription('Flux-filter app\'s API')
+    .setDescription("Flux-filter app's API")
     .setBasePath('v2/api')
     .setVersion('1.0')
     .addTag('flows')
@@ -24,6 +24,7 @@ async function bootstrap() {
   });
 
   app.setGlobalPrefix('v2/api');
+  app.enableCors();
   await app.listen(parseInt(process.env.SERVER_PORT || '3000', 10));
 }
 bootstrap();

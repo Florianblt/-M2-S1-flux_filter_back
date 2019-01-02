@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { SharedModule } from './shared/shared.module';
+import { SharedModule } from 'shared/shared.module';
 import { FlowModule } from './flow/flow.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApplicationModule } from './app/app.module';
@@ -17,9 +17,7 @@ import { UserModule } from './user/user.module';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE,
-      entities: [
-        'src/**/**.entity{.ts,.js}',
-      ],
+      entities: ['src/**/**.entity{.ts,.js}'],
       synchronize: true,
     }),
     SharedModule,
@@ -30,5 +28,4 @@ import { UserModule } from './user/user.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-}
+export class AppModule {}

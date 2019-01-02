@@ -4,9 +4,9 @@ import { UserRepository } from './user.repository';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { AuthService } from '../shared/auth/auth.service';
 
-class TestingMockService { }
+class TestingMockService {}
 
-class TestingAuthService { }
+class TestingAuthService {}
 
 describe('UserService', () => {
   let service: UserService;

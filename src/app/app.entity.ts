@@ -5,25 +5,24 @@ import { Flow } from '../flow/flow.entity';
 
 @Entity()
 export class App extends EntityModel {
-    @ApiModelProperty({ required: true })
-    @Column({ length: 500 })
-    name: string;
+  @ApiModelProperty({ required: true })
+  @Column({ length: 500 })
+  name: string;
 
-    @ApiModelProperty({ required: false })
-    @Column({ length: 1000 })
-    description: string;
+  @ApiModelProperty({ required: false })
+  @Column({ length: 1000 })
+  description: string;
 
-    @ApiModelProperty({ required: false })
-    @Column({
-        length: 1000,
-        nullable: true,
-    })
-    technologies: string;
+  @ApiModelProperty({ required: false })
+  @Column({
+    length: 1000,
+    nullable: true,
+  })
+  technologies: string;
 
-    @OneToMany(type => Flow, flow => flow.targetApp)
-    incomingFlows: Flow[];
+  @OneToMany(type => Flow, flow => flow.targetApp)
+  incomingFlows: Flow[];
 
-    @OneToMany(type => Flow, flow => flow.sourceApp)
-    outcomingFlows: Flow[];
-
+  @OneToMany(type => Flow, flow => flow.sourceApp)
+  outcomingFlows: Flow[];
 }

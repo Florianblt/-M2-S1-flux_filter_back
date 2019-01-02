@@ -1,24 +1,35 @@
-import request from 'supertest';
+import * as request from 'supertest';
 import { Test } from '@nestjs/testing';
-import { AppModule } from './../src/app.module';
+import { ApplicationModule } from '../src/app/app.module';
+import { AppService } from '../src/app/app.service';
 import { INestApplication } from '@nestjs/common';
 
-describe('AppController (e2e)', () => {
+describe('Cats', () => {
   let app: INestApplication;
+  let appService = { findAll: () => ['test'] };
 
   beforeAll(async () => {
-    const moduleFixture = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
+    const module = await Test.createTestingModule({
+      imports: [ApplicationModule],
+    })
+      .overrideProvider(AppService)
+      .useValue(appService)
+      .compile();
 
-    app = moduleFixture.createNestApplication();
+    app = module.createNestApplication();
     await app.init();
   });
 
-  it('/GET /', () => {
+  it(`/GET cats`, () => {
     return request(app.getHttpServer())
-      .get('/')
+      .get('/apps')
       .expect(200)
-      .expect('Hello nestJS !');
+      .expect({
+        data: appService.findAll(),
+      });
+  });
+
+  afterAll(async () => {
+    await app.close();
   });
 });
