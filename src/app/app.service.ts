@@ -12,7 +12,6 @@ import { NewApp } from './newApp.dto';
 import { Pagination } from './../pagination';
 import { AppPagination } from './app.pagination';
 import { Like } from 'typeorm';
-import { HttpException } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
@@ -39,7 +38,7 @@ export class AppService {
         updateDate: 'DESC',
       },
     });
-    if (options.page > total) throw new BadRequestException();
+    if (options.page > total && total != 0) throw new BadRequestException();
     return new Pagination<App>({ results, total });
   }
 
@@ -69,5 +68,21 @@ export class AppService {
       async theApp => await this.appRepository.remove(theApp),
       () => new NotFoundException(),
     );
+  }
+
+  async updateApp(idApp: number, newApp: NewApp): Promise<App> {
+    const existingApp = await this.appRepository.findOneById(idApp);
+    existingApp.ifPresentOrElse(
+      async theApp => {
+        theApp.name = newApp.name;
+        theApp.description = newApp.description;
+        theApp.team = newApp.team;
+        theApp.technologies = newApp.technologies;
+        theApp = await this.appRepository.save(theApp);
+      },
+      () => new NotFoundException(),
+    );
+    const theNewApp = await this.appRepository.findOneById(idApp);
+    return theNewApp.orElseThrow(() => new NotFoundException());
   }
 }

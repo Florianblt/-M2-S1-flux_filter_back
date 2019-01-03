@@ -10,6 +10,10 @@ export class FlowRepository extends Repository<Flow> {
   }
 
   async findOneById(id: number): Promise<Optional<Flow>> {
-    return Optional.ofNullable(await this.findOne(id));
+    return Optional.ofNullable(
+      await this.findOne(id, {
+        relations: ['sourceApp', 'targetApp'],
+      }),
+    );
   }
 }

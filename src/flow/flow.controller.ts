@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Put,
 } from '@nestjs/common';
 import {
   ApiResponse,
@@ -55,7 +56,7 @@ export class FlowController {
   @ApiResponse({
     status: 200,
     description: 'Return the list of all the flows.',
-    type: Flow,
+    type: Array,
     isArray: true,
   })
   async findAll(@Request() request): Promise<Pagination<Flow>> {
@@ -69,17 +70,16 @@ export class FlowController {
       name: request.query.hasOwnProperty('name') ? request.query.name : '',
       description: request.query.hasOwnProperty('description')
         ? request.query.description
-        : null,
+        : '',
       technologies: request.query.hasOwnProperty('technologies')
         ? request.query.technologies
-        : null,
+        : '',
     });
   }
 
   @Get(':id')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles(UserRole.User)
-  @Roles(UserRole.Admin)
+  @Roles(UserRole.User, UserRole.Admin)
   @ApiResponse({
     status: 200,
     description: 'Return one flow',
@@ -94,7 +94,7 @@ export class FlowController {
     return this.flowService.findById(id);
   }
 
-  @Delete('id')
+  @Delete(':id')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles(UserRole.Admin)
   @ApiResponse({
@@ -105,8 +105,23 @@ export class FlowController {
     status: 404,
     description: 'Flow not found',
   })
-  deleteByName(@Param('id') id: number) {
+  deleteById(@Param('id') id: number) {
     return this.flowService.deleteFlow(id);
+  }
+
+  @Put(':id')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.Admin)
+  @ApiResponse({
+    status: 200,
+    description: 'Update the flow',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Flow not found',
+  })
+  updateById(@Param('id') id: number, @Body() newFlow: NewFlow) {
+    return this.flowService.updateFlow(id, newFlow);
   }
 
   @Post()

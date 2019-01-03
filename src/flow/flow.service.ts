@@ -39,8 +39,9 @@ export class FlowService {
       order: {
         updateDate: 'DESC',
       },
+      relations: ['sourceApp', 'targetApp'],
     });
-    if (options.page >= total) throw new BadRequestException();
+    if (options.page >= total && total != 0) throw new BadRequestException();
     return new Pagination<Flow>({ results, total });
   }
 
@@ -79,5 +80,28 @@ export class FlowService {
       },
       () => new NotFoundException(),
     );
+  }
+
+  async updateFlow(idFlow: number, newFlow: NewFlow): Promise<Flow> {
+    const existingFlow = await this.flowRepository.findOneById(idFlow);
+    existingFlow.ifPresentOrElse(
+      async theFlow => {
+        const existingSourceApp = await this.appService.findById(
+          newFlow.sourceAppId,
+        );
+        const existingTargetApp = await this.appService.findById(
+          newFlow.targetAppId,
+        );
+        theFlow.name = newFlow.name;
+        theFlow.description = newFlow.description;
+        theFlow.technologies = newFlow.technologies;
+        theFlow.sourceApp = existingSourceApp;
+        theFlow.targetApp = existingTargetApp;
+        return await this.flowRepository.save(theFlow);
+      },
+      () => new NotFoundException(),
+    );
+    const theNewFlow = await this.flowRepository.findOneById(idFlow);
+    return theNewFlow.orElseThrow(() => new NotFoundException());
   }
 }

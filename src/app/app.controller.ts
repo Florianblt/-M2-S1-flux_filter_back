@@ -8,6 +8,7 @@ import {
   Param,
   Query,
   UseGuards,
+  Put,
 } from '@nestjs/common';
 import {
   ApiUseTags,
@@ -107,8 +108,26 @@ export class AppController {
     status: 200,
     description: 'Delete the app',
   })
-  deleteByName(@Param('id') id: number) {
+  @ApiResponse({
+    status: 404,
+    description: 'App not found',
+  })
+  deleteById(@Param('id') id: number) {
     return this.appService.deleteApp(id);
+  }
+  @Put(':id')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.Admin)
+  @ApiResponse({
+    status: 200,
+    description: 'Delete the app',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'App not found',
+  })
+  updateById(@Param('id') id: number, @Body() newApp: NewApp) {
+    return this.appService.updateApp(id, newApp);
   }
 
   @Post()
