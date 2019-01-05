@@ -36,32 +36,32 @@ export class FlowService {
       .where('flow.id is not null');
     if (options.strict) {
       console.log(options);
-      if (options.name)
+      if (options.name != null)
         request = request.andWhere('LOWER(flow.name) LIKE LOWER(:name)', {
           name: '%' + options.name + '%',
         });
-      if (options.description)
+      if (options.description != null)
         request = request.andWhere(
           'LOWER(flow.description) LIKE LOWER(:description)',
           {
             description: '%' + options.description + '%',
           },
         );
-      if (options.technologies)
+      if (options.technologies != null)
         request = request.andWhere(
           'LOWER(flow.technologies) LIKE LOWER(:technologies)',
           {
             technologies: '%' + options.technologies + '%',
           },
         );
-      if (options.sourceAppName)
+      if (options.sourceAppName != null)
         request = request.andWhere(
           'LOWER(sourceApp.name) LIKE LOWER(:sourceAppName)',
           {
             sourceAppName: '%' + options.sourceAppName + '%',
           },
         );
-      if (options.targetAppName)
+      if (options.targetAppName != null)
         request = request.andWhere(
           'LOWER(targetApp.name) LIKE LOWER(:targetAppName)',
           {
@@ -69,32 +69,32 @@ export class FlowService {
           },
         );
     } else {
-      if (!options.name)
+      if (!options.name != null)
         request = request.orWhere('LOWER(flow.name) LIKE LOWER(:name)', {
           name: '%' + options.name + '%',
         });
-      if (options.description)
+      if (options.description != null)
         request = request.orWhere(
           'LOWER(flow.description) LIKE LOWER(:description)',
           {
             description: '%' + options.description + '%',
           },
         );
-      if (options.technologies)
+      if (options.technologies != null)
         request = request.orWhere(
           'LOWER(flow.technologies) LIKE LOWER(:technologies)',
           {
             technologies: '%' + options.technologies + '%',
           },
         );
-      if (options.sourceAppName)
+      if (options.sourceAppName != null)
         request = request.orWhere(
           'LOWER(sourceApp.name) LIKE LOWER(:sourceAppName)',
           {
             sourceAppName: '%' + options.sourceAppName + '%',
           },
         );
-      if (options.targetAppName)
+      if (options.targetAppName != null)
         request = request.orWhere(
           'LOWER(targetApp.name) LIKE LOWER(:targetAppName)',
           {

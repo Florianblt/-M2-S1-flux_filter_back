@@ -79,7 +79,7 @@ export class FlowController {
       page: request.query.hasOwnProperty('page')
         ? request.query.page
         : process.env.PAGE,
-      name: request.query.hasOwnProperty('name') ? request.query.name : '',
+      name: request.query.hasOwnProperty('name') ? request.query.name : null,
       description: request.query.hasOwnProperty('description')
         ? request.query.description
         : null,

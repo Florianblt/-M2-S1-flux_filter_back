@@ -30,22 +30,23 @@ export class AppService {
       .createQueryBuilder('app')
       .where('app.id is not null');
     if (!options.strict) {
-      if (options.name)
+      if (options.name != null)
         request = request.orWhere('LOWER(app.name) LIKE LOWER(:name)', {
           name: '%' + options.name + '%',
         });
-      if (options.description)
+      if (options.description != null) {
         request = request.orWhere(
           'LOWER(app.description) LIKE LOWER(:description)',
           {
             description: '%' + options.description + '%',
           },
         );
-      if (options.team)
+      }
+      if (options.team != null)
         request = request.orWhere('LOWER(app.team) LIKE LOWER(:team)', {
           team: '%' + options.team + '%',
         });
-      if (options.technologies)
+      if (options.technologies != null)
         request = request.orWhere(
           'LOWER(app.technologies) LIKE LOWER(:technologies)',
           {
@@ -53,22 +54,22 @@ export class AppService {
           },
         );
     } else {
-      if (options.name)
+      if (options.name != null)
         request = request.andWhere('LOWER(app.name) LIKE LOWER(:name)', {
           name: '%' + options.name + '%',
         });
-      if (options.description)
+      if (options.description != null)
         request = request.andWhere(
           'LOWER(app.description) LIKE LOWER(:description)',
           {
             description: '%' + options.description + '%',
           },
         );
-      if (options.team)
+      if (options.team != null)
         request = request.andWhere('LOWER(app.team) LIKE LOWER(:team)', {
           team: '%' + options.team + '%',
         });
-      if (options.technologies)
+      if (options.technologies != null)
         request = request.andWhere(
           'LOWER(app.technologies) LIKE LOWER(:technologies)',
           {
