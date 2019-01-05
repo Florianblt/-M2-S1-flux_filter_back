@@ -5,4 +5,5 @@ export class AppPagination extends PaginationOptions {
   description: string;
   team: string;
   technologies: string;
+  strict: Boolean;
 }

@@ -43,14 +43,10 @@ export class UserService {
   async register(dto: RegisterDto): Promise<UserDto> {
     const isUser = await this.userRepository.findOneWithEmail(dto.email);
     if (isUser.isPresent) {
-      const userDto = new UserDto();
-      userDto.email = isUser.get().email;
-      userDto.firstName = isUser.get().firstName;
-      userDto.lastName = isUser.get().lastName;
-      userDto.id = isUser.get().id;
-      userDto.createdAt = isUser.get().creationDate;
-      userDto.updatedAt = isUser.get().updateDate;
-      return userDto;
+      throw new HttpException(
+        'Email is already in use',
+        HttpStatus.BAD_REQUEST,
+      );
     } else {
       const newUser = new User();
       newUser.email = dto.email.toLocaleLowerCase();

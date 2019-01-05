@@ -12,7 +12,6 @@ import { AppService } from '../app/app.service';
 import { FlowRepository } from './flow.repository';
 import { Pagination } from './../pagination';
 import { FlowPagination } from './flow.pagination';
-import { Like } from 'typeorm';
 
 @Injectable()
 export class FlowService {
@@ -28,25 +27,82 @@ export class FlowService {
   }
 
   async paginate(options: FlowPagination): Promise<Pagination<Flow>> {
-    const [results, total] = await this.flowRepository
+    let results: Flow[];
+    let total: number;
+    let request = this.flowRepository
       .createQueryBuilder('flow')
       .leftJoinAndSelect('flow.sourceApp', 'sourceApp')
       .leftJoinAndSelect('flow.targetApp', 'targetApp')
-      .where('LOWER(flow.name) LIKE LOWER(:name)', {
-        name: '%' + options.name + '%',
-      })
-      .andWhere('LOWER(flow.description) LIKE LOWER(:description)', {
-        description: '%' + options.description + '%',
-      })
-      .andWhere('LOWER(flow.technologies) LIKE LOWER(:technologies)', {
-        technologies: '%' + options.technologies + '%',
-      })
-      .andWhere('LOWER(sourceApp.name) LIKE LOWER(:sourceAppName)', {
-        sourceAppName: '%' + options.sourceAppName + '%',
-      })
-      .andWhere('LOWER(targetApp.name) LIKE LOWER(:targetAppName)', {
-        targetAppName: '%' + options.targetAppName + '%',
-      })
+      .where('flow.id is not null');
+    if (options.strict) {
+      console.log(options);
+      if (options.name)
+        request = request.andWhere('LOWER(flow.name) LIKE LOWER(:name)', {
+          name: '%' + options.name + '%',
+        });
+      if (options.description)
+        request = request.andWhere(
+          'LOWER(flow.description) LIKE LOWER(:description)',
+          {
+            description: '%' + options.description + '%',
+          },
+        );
+      if (options.technologies)
+        request = request.andWhere(
+          'LOWER(flow.technologies) LIKE LOWER(:technologies)',
+          {
+            technologies: '%' + options.technologies + '%',
+          },
+        );
+      if (options.sourceAppName)
+        request = request.andWhere(
+          'LOWER(sourceApp.name) LIKE LOWER(:sourceAppName)',
+          {
+            sourceAppName: '%' + options.sourceAppName + '%',
+          },
+        );
+      if (options.targetAppName)
+        request = request.andWhere(
+          'LOWER(targetApp.name) LIKE LOWER(:targetAppName)',
+          {
+            targetAppName: '%' + options.targetAppName + '%',
+          },
+        );
+    } else {
+      if (!options.name)
+        request = request.orWhere('LOWER(flow.name) LIKE LOWER(:name)', {
+          name: '%' + options.name + '%',
+        });
+      if (options.description)
+        request = request.orWhere(
+          'LOWER(flow.description) LIKE LOWER(:description)',
+          {
+            description: '%' + options.description + '%',
+          },
+        );
+      if (options.technologies)
+        request = request.orWhere(
+          'LOWER(flow.technologies) LIKE LOWER(:technologies)',
+          {
+            technologies: '%' + options.technologies + '%',
+          },
+        );
+      if (options.sourceAppName)
+        request = request.orWhere(
+          'LOWER(sourceApp.name) LIKE LOWER(:sourceAppName)',
+          {
+            sourceAppName: '%' + options.sourceAppName + '%',
+          },
+        );
+      if (options.targetAppName)
+        request = request.orWhere(
+          'LOWER(targetApp.name) LIKE LOWER(:targetAppName)',
+          {
+            targetAppName: '%' + options.targetAppName + '%',
+          },
+        );
+    }
+    [results, total] = await request
       .take(options.limit)
       .skip(options.page)
       .orderBy('flow.updateDate', 'DESC')
@@ -107,7 +163,7 @@ export class FlowService {
         theFlow.technologies = newFlow.technologies;
         theFlow.sourceApp = existingSourceApp;
         theFlow.targetApp = existingTargetApp;
-        return await this.flowRepository.save(theFlow);
+        await this.flowRepository.save(theFlow);
       },
       () => new NotFoundException(),
     );

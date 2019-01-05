@@ -59,6 +59,10 @@ export class AppController {
     name: 'technologies',
     required: false,
   })
+  @ApiImplicitQuery({
+    name: 'strict',
+    required: false,
+  })
   @ApiResponse({
     status: 200,
     description: 'The list of all the apps.',
@@ -73,14 +77,17 @@ export class AppController {
       page: request.query.hasOwnProperty('page')
         ? request.query.page
         : process.env.PAGE,
-      name: request.query.hasOwnProperty('name') ? request.query.name : '',
+      name: request.query.hasOwnProperty('name') ? request.query.name : null,
       description: request.query.hasOwnProperty('description')
         ? request.query.description
-        : '',
-      team: request.query.hasOwnProperty('team') ? request.query.team : '',
+        : null,
+      team: request.query.hasOwnProperty('team') ? request.query.team : null,
       technologies: request.query.hasOwnProperty('technologies')
         ? request.query.technologies
-        : '',
+        : null,
+      strict: request.query.hasOwnProperty('strict')
+        ? request.query.strict
+        : false,
     });
   }
 

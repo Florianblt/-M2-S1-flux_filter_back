@@ -44,12 +44,12 @@
     "postgresql": "^0.0.1",
     "reflect-metadata": "^0.1.12",
     "rxjs": "^6.0.0",
+    "ts-node": "^4.1.0",
+    "tsconfig-paths": "^3.1.1",
     "typeorm": "^0.2.8",
     "typescript": "^2.6.2",
     "typescript-optional": "^1.8.0",
-    "yarn": "^1.12.3",
-    "ts-node": "^4.1.0",
-    "tsconfig-paths": "^3.1.1"
+    "yarn": "^1.12.3"
   },
   "devDependencies": {
     "@nestjs/testing": "^5.4.0",

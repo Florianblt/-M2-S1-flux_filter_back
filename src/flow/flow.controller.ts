@@ -61,6 +61,10 @@ export class FlowController {
     name: 'targetAppName',
     required: false,
   })
+  @ApiImplicitQuery({
+    name: 'strict',
+    required: false,
+  })
   @ApiResponse({
     status: 200,
     description: 'Return the list of all the flows.',
@@ -78,16 +82,19 @@ export class FlowController {
       name: request.query.hasOwnProperty('name') ? request.query.name : '',
       description: request.query.hasOwnProperty('description')
         ? request.query.description
-        : '',
+        : null,
       technologies: request.query.hasOwnProperty('technologies')
         ? request.query.technologies
-        : '',
+        : null,
       sourceAppName: request.query.hasOwnProperty('sourceAppName')
         ? request.query.sourceAppName
-        : '',
+        : null,
       targetAppName: request.query.hasOwnProperty('targetAppName')
         ? request.query.targetAppName
-        : '',
+        : null,
+      strict: request.query.hasOwnProperty('strict')
+        ? request.query.strict
+        : false,
     });
   }
 

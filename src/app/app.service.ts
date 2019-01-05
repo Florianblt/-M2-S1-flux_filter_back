@@ -11,7 +11,6 @@ import { App } from './app.entity';
 import { NewApp } from './newApp.dto';
 import { Pagination } from './../pagination';
 import { AppPagination } from './app.pagination';
-import { Like } from 'typeorm';
 
 @Injectable()
 export class AppService {
@@ -25,37 +24,63 @@ export class AppService {
   }
 
   async paginate(options: AppPagination): Promise<Pagination<App>> {
-    const [results, total] = await this.appRepository
+    let results: App[];
+    let total: number;
+    let request = this.appRepository
       .createQueryBuilder('app')
-      .where('LOWER(app.name) LIKE LOWER(:name)', {
-        name: '%' + options.name + '%',
-      })
-      .andWhere('LOWER(app.description) LIKE LOWER(:description)', {
-        description: '%' + options.description + '%',
-      })
-      .andWhere('LOWER(app.team) LIKE LOWER(:team)', {
-        team: '%' + options.team + '%',
-      })
-      .andWhere('LOWER(app.technologies) LIKE LOWER(:technologies)', {
-        technologies: '%' + options.technologies + '%',
-      })
+      .where('app.id is not null');
+    if (!options.strict) {
+      if (options.name)
+        request = request.orWhere('LOWER(app.name) LIKE LOWER(:name)', {
+          name: '%' + options.name + '%',
+        });
+      if (options.description)
+        request = request.orWhere(
+          'LOWER(app.description) LIKE LOWER(:description)',
+          {
+            description: '%' + options.description + '%',
+          },
+        );
+      if (options.team)
+        request = request.orWhere('LOWER(app.team) LIKE LOWER(:team)', {
+          team: '%' + options.team + '%',
+        });
+      if (options.technologies)
+        request = request.orWhere(
+          'LOWER(app.technologies) LIKE LOWER(:technologies)',
+          {
+            technologies: '%' + options.technologies + '%',
+          },
+        );
+    } else {
+      if (options.name)
+        request = request.andWhere('LOWER(app.name) LIKE LOWER(:name)', {
+          name: '%' + options.name + '%',
+        });
+      if (options.description)
+        request = request.andWhere(
+          'LOWER(app.description) LIKE LOWER(:description)',
+          {
+            description: '%' + options.description + '%',
+          },
+        );
+      if (options.team)
+        request = request.andWhere('LOWER(app.team) LIKE LOWER(:team)', {
+          team: '%' + options.team + '%',
+        });
+      if (options.technologies)
+        request = request.andWhere(
+          'LOWER(app.technologies) LIKE LOWER(:technologies)',
+          {
+            technologies: '%' + options.technologies + '%',
+          },
+        );
+    }
+    [results, total] = await request
       .take(options.limit)
       .skip(options.page)
       .orderBy('app.updateDate', 'DESC')
       .getManyAndCount();
-    /*const [results, total] = await this.appRepository.findAndCount({
-      take: options.limit,
-      skip: options.page,
-      where: {
-        name: Like('%' + options.name + '%'),
-        description: Like('%' + options.description + '%'),
-        team: Like('%' + options.team + '%'),
-        technologies: Like('%' + options.technologies + '%'),
-      },
-      order: {
-        updateDate: 'DESC',
-      },
-    });*/
     if (options.page > total && total != 0) throw new BadRequestException();
     return new Pagination<App>({ results, total });
   }
@@ -96,7 +121,7 @@ export class AppService {
         theApp.description = newApp.description;
         theApp.team = newApp.team;
         theApp.technologies = newApp.technologies;
-        theApp = await this.appRepository.save(theApp);
+        await this.appRepository.save(theApp);
       },
       () => new NotFoundException(),
     );

@@ -1,5 +1,5 @@
 import { EntityModel } from '../shared/entity.model';
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, Unique } from 'typeorm';
 import { IsEmail } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { UserRole } from './user-role.enum';
@@ -7,8 +7,7 @@ import { UserRole } from './user-role.enum';
 @Entity()
 export class User extends EntityModel {
   @ApiModelProperty({ required: true })
-  @Column({ length: 100 })
-  @IsEmail()
+  @Column({ length: 100, unique: true })
   email: string;
 
   @ApiModelProperty({ required: true })
