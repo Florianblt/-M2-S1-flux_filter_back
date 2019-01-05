@@ -28,19 +28,29 @@ export class FlowService {
   }
 
   async paginate(options: FlowPagination): Promise<Pagination<Flow>> {
-    const [results, total] = await this.flowRepository.findAndCount({
-      take: options.limit,
-      skip: options.page,
-      where: {
-        name: Like('%' + options.name + '%'),
-        description: Like('%' + options.description + '%'),
-        technologies: Like('%' + options.technologies + '%'),
-      },
-      order: {
-        updateDate: 'DESC',
-      },
-      relations: ['sourceApp', 'targetApp'],
-    });
+    const [results, total] = await this.flowRepository
+      .createQueryBuilder('flow')
+      .leftJoinAndSelect('flow.sourceApp', 'sourceApp')
+      .leftJoinAndSelect('flow.targetApp', 'targetApp')
+      .where('LOWER(flow.name) LIKE LOWER(:name)', {
+        name: '%' + options.name + '%',
+      })
+      .andWhere('LOWER(flow.description) LIKE LOWER(:description)', {
+        description: '%' + options.description + '%',
+      })
+      .andWhere('LOWER(flow.technologies) LIKE LOWER(:technologies)', {
+        technologies: '%' + options.technologies + '%',
+      })
+      .andWhere('LOWER(sourceApp.name) LIKE LOWER(:sourceAppName)', {
+        sourceAppName: '%' + options.sourceAppName + '%',
+      })
+      .andWhere('LOWER(targetApp.name) LIKE LOWER(:targetAppName)', {
+        targetAppName: '%' + options.targetAppName + '%',
+      })
+      .take(options.limit)
+      .skip(options.page)
+      .orderBy('flow.updateDate', 'DESC')
+      .getManyAndCount();
     if (options.page >= total && total != 0) throw new BadRequestException();
     return new Pagination<Flow>({ results, total });
   }

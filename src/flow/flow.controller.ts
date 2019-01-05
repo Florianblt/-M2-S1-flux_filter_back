@@ -53,6 +53,14 @@ export class FlowController {
     name: 'technologies',
     required: false,
   })
+  @ApiImplicitQuery({
+    name: 'sourceAppName',
+    required: false,
+  })
+  @ApiImplicitQuery({
+    name: 'targetAppName',
+    required: false,
+  })
   @ApiResponse({
     status: 200,
     description: 'Return the list of all the flows.',
@@ -73,6 +81,12 @@ export class FlowController {
         : '',
       technologies: request.query.hasOwnProperty('technologies')
         ? request.query.technologies
+        : '',
+      sourceAppName: request.query.hasOwnProperty('sourceAppName')
+        ? request.query.sourceAppName
+        : '',
+      targetAppName: request.query.hasOwnProperty('targetAppName')
+        ? request.query.targetAppName
         : '',
     });
   }

@@ -25,7 +25,25 @@ export class AppService {
   }
 
   async paginate(options: AppPagination): Promise<Pagination<App>> {
-    const [results, total] = await this.appRepository.findAndCount({
+    const [results, total] = await this.appRepository
+      .createQueryBuilder('app')
+      .where('LOWER(app.name) LIKE LOWER(:name)', {
+        name: '%' + options.name + '%',
+      })
+      .andWhere('LOWER(app.description) LIKE LOWER(:description)', {
+        description: '%' + options.description + '%',
+      })
+      .andWhere('LOWER(app.team) LIKE LOWER(:team)', {
+        team: '%' + options.team + '%',
+      })
+      .andWhere('LOWER(app.technologies) LIKE LOWER(:technologies)', {
+        technologies: '%' + options.technologies + '%',
+      })
+      .take(options.limit)
+      .skip(options.page)
+      .orderBy('app.updateDate', 'DESC')
+      .getManyAndCount();
+    /*const [results, total] = await this.appRepository.findAndCount({
       take: options.limit,
       skip: options.page,
       where: {
@@ -37,7 +55,7 @@ export class AppService {
       order: {
         updateDate: 'DESC',
       },
-    });
+    });*/
     if (options.page > total && total != 0) throw new BadRequestException();
     return new Pagination<App>({ results, total });
   }
