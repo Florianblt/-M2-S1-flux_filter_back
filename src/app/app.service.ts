@@ -26,22 +26,19 @@ export class AppService {
   async paginate(options: AppPagination): Promise<Pagination<App>> {
     let results: App[];
     let total: number;
-    let request = this.appRepository
-      .createQueryBuilder('app')
-      .where('app.id is not null');
+    let request = this.appRepository.createQueryBuilder('app');
     if (!options.strict) {
       if (options.name != null)
         request = request.orWhere('LOWER(app.name) LIKE LOWER(:name)', {
           name: '%' + options.name + '%',
         });
-      if (options.description != null) {
+      if (options.description != null)
         request = request.orWhere(
           'LOWER(app.description) LIKE LOWER(:description)',
           {
             description: '%' + options.description + '%',
           },
         );
-      }
       if (options.team != null)
         request = request.orWhere('LOWER(app.team) LIKE LOWER(:team)', {
           team: '%' + options.team + '%',

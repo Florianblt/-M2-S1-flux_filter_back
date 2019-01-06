@@ -32,8 +32,7 @@ export class FlowService {
     let request = this.flowRepository
       .createQueryBuilder('flow')
       .leftJoinAndSelect('flow.sourceApp', 'sourceApp')
-      .leftJoinAndSelect('flow.targetApp', 'targetApp')
-      .where('flow.id is not null');
+      .leftJoinAndSelect('flow.targetApp', 'targetApp');
     if (options.strict) {
       console.log(options);
       if (options.name != null)
