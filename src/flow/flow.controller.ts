@@ -92,9 +92,7 @@ export class FlowController {
       targetAppName: request.query.hasOwnProperty('targetAppName')
         ? request.query.targetAppName
         : null,
-      strict: request.query.hasOwnProperty('strict')
-        ? request.query.strict
-        : false,
+      strict: request.query.hasOwnProperty('strict') ? request.query.strict : 0,
     });
   }
 

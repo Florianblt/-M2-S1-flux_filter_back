@@ -33,7 +33,7 @@ export class FlowService {
       .createQueryBuilder('flow')
       .leftJoinAndSelect('flow.sourceApp', 'sourceApp')
       .leftJoinAndSelect('flow.targetApp', 'targetApp');
-    if (options.strict) {
+    if (options.strict == 1) {
       console.log(options);
       if (options.name != null)
         request = request.andWhere('LOWER(flow.name) LIKE LOWER(:name)', {

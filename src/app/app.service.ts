@@ -27,7 +27,7 @@ export class AppService {
     let results: App[];
     let total: number;
     let request = this.appRepository.createQueryBuilder('app');
-    if (!options.strict) {
+    if (options.strict == 0) {
       if (options.name != null)
         request = request.orWhere('LOWER(app.name) LIKE LOWER(:name)', {
           name: '%' + options.name + '%',

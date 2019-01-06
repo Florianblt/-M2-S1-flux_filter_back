@@ -6,5 +6,5 @@ export class FlowPagination extends PaginationOptions {
   technologies: string;
   sourceAppName: string;
   targetAppName: string;
-  strict: Boolean;
+  strict: number;
 }

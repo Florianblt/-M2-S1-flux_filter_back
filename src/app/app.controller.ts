@@ -85,9 +85,7 @@ export class AppController {
       technologies: request.query.hasOwnProperty('technologies')
         ? request.query.technologies
         : null,
-      strict: request.query.hasOwnProperty('strict')
-        ? request.query.strict
-        : false,
+      strict: request.query.hasOwnProperty('strict') ? request.query.strict : 0,
     });
   }
 
