@@ -29,9 +29,13 @@ $ yarn run start
 $ yarn run start:dev
 ```
 
+## Using the app
+A swagger is installed at the following url: http://localhost:3000/v2/api/docs
+
 ## Create the first admin user
 
-After creating an user with http://localhost:3000/v2/api/users/register, you can use the Admin at http://localhost:8080/ to access and modify the database datas.
+After creating an user with http://localhost:3000/v2/api/users/register, you can use the Adminer at http://localhost:8080/ to access and modify databases datas.
+Just pass the user's role to 'Admin'.
 
 ## Test
 
